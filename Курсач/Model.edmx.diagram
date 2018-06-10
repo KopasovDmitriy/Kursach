@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e3ce975db3b34ed3afd05b90cab49482" Name="Diagram1" ZoomLevel="65">
+        <EntityTypeShape EntityType="CourseWorkModel.Admin" Width="1.5" PointX="4.75" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CourseWorkModel.Bet" Width="1.5" PointX="2" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CourseWorkModel.Client" Width="1.5" PointX="1.875" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CourseWorkModel.Horse" Width="1.5" PointX="7.5" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CourseWorkModel.Race" Width="1.5" PointX="2.125" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CourseWorkModel.RaceMembers" Width="1.5" PointX="4.625" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CourseWorkModel.Rider" Width="1.5" PointX="4.75" PointY="3.875" IsExpanded="true" />
+        <AssociationConnector Association="CourseWorkModel.FK_Bet_Client" ManuallyRouted="false" />
+        <AssociationConnector Association="CourseWorkModel.FK_Bet_Race" ManuallyRouted="false" />
+        <AssociationConnector Association="CourseWorkModel.FK_Horse_Rider" ManuallyRouted="false" />
+        <AssociationConnector Association="CourseWorkModel.FK_Rider_Horse" ManuallyRouted="false" />
+        <AssociationConnector Association="CourseWorkModel.FK_RaceMembers_Race" ManuallyRouted="false" />
+        <AssociationConnector Association="CourseWorkModel.FK_RaceMembers_Rider" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

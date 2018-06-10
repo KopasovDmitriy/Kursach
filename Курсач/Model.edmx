@@ -1,0 +1,461 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище CourseWorkModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="AdminId" />
+          </Key>
+          <Property Name="AdminId" Type="int" Nullable="false" />
+          <Property Name="LoginName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Passvord" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Bet">
+          <Key>
+            <PropertyRef Name="RaceId" />
+            <PropertyRef Name="ClientID" />
+          </Key>
+          <Property Name="RaceId" Type="int" Nullable="false" />
+          <Property Name="ClientID" Type="int" Nullable="false" />
+          <Property Name="HorseID" Type="int" Nullable="false" />
+          <Property Name="BetSum" Type="int" Nullable="false" />
+          <Property Name="isOpen" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LoginName" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="Account" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Horse">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Species" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="YearBirth" Type="int" Nullable="false" />
+          <Property Name="Rang" Type="int" Nullable="false" />
+          <Property Name="RiderID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Race">
+          <Key>
+            <PropertyRef Name="RaceId" />
+          </Key>
+          <Property Name="RaceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="isOver" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RaceMembers">
+          <Key>
+            <PropertyRef Name="RaceId" />
+            <PropertyRef Name="RiderID" />
+          </Key>
+          <Property Name="RaceId" Type="int" Nullable="false" />
+          <Property Name="RiderID" Type="int" Nullable="false" />
+          <Property Name="Place" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Rider">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Country" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="HorseId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Bet_Client">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="Bet" Type="Self.Bet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Bet">
+              <PropertyRef Name="ClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bet_Race">
+          <End Role="Race" Type="Self.Race" Multiplicity="1" />
+          <End Role="Bet" Type="Self.Bet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Race">
+              <PropertyRef Name="RaceId" />
+            </Principal>
+            <Dependent Role="Bet">
+              <PropertyRef Name="RaceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Horse_Rider">
+          <End Role="Rider" Type="Self.Rider" Multiplicity="1" />
+          <End Role="Horse" Type="Self.Horse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rider">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Horse">
+              <PropertyRef Name="RiderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RaceMembers_Race">
+          <End Role="Race" Type="Self.Race" Multiplicity="1" />
+          <End Role="RaceMembers" Type="Self.RaceMembers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Race">
+              <PropertyRef Name="RaceId" />
+            </Principal>
+            <Dependent Role="RaceMembers">
+              <PropertyRef Name="RaceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RaceMembers_Rider">
+          <End Role="Rider" Type="Self.Rider" Multiplicity="1" />
+          <End Role="RaceMembers" Type="Self.RaceMembers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rider">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RaceMembers">
+              <PropertyRef Name="RiderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Rider_Horse">
+          <End Role="Horse" Type="Self.Horse" Multiplicity="1" />
+          <End Role="Rider" Type="Self.Rider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Horse">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Rider">
+              <PropertyRef Name="HorseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище CourseWorkModelContainer">
+          <EntitySet Name="Admin" EntityType="Self.Admin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Bet" EntityType="Self.Bet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Horse" EntityType="Self.Horse" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Race" EntityType="Self.Race" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RaceMembers" EntityType="Self.RaceMembers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Rider" EntityType="Self.Rider" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Bet_Client" Association="Self.FK_Bet_Client">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="Bet" EntitySet="Bet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bet_Race" Association="Self.FK_Bet_Race">
+            <End Role="Race" EntitySet="Race" />
+            <End Role="Bet" EntitySet="Bet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Horse_Rider" Association="Self.FK_Horse_Rider">
+            <End Role="Rider" EntitySet="Rider" />
+            <End Role="Horse" EntitySet="Horse" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RaceMembers_Race" Association="Self.FK_RaceMembers_Race">
+            <End Role="Race" EntitySet="Race" />
+            <End Role="RaceMembers" EntitySet="RaceMembers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RaceMembers_Rider" Association="Self.FK_RaceMembers_Rider">
+            <End Role="Rider" EntitySet="Rider" />
+            <End Role="RaceMembers" EntitySet="RaceMembers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Rider_Horse" Association="Self.FK_Rider_Horse">
+            <End Role="Horse" EntitySet="Horse" />
+            <End Role="Rider" EntitySet="Rider" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CourseWorkModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="AdminId" />
+          </Key>
+          <Property Name="AdminId" Type="Int32" Nullable="false" />
+          <Property Name="LoginName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Passvord" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Bet">
+          <Key>
+            <PropertyRef Name="RaceId" />
+            <PropertyRef Name="ClientID" />
+          </Key>
+          <Property Name="RaceId" Type="Int32" Nullable="false" />
+          <Property Name="ClientID" Type="Int32" Nullable="false" />
+          <Property Name="HorseID" Type="Int32" Nullable="false" />
+          <Property Name="BetSum" Type="Int32" Nullable="false" />
+          <Property Name="isOpen" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Client" Relationship="Self.FK_Bet_Client" FromRole="Bet" ToRole="Client" />
+          <NavigationProperty Name="Race" Relationship="Self.FK_Bet_Race" FromRole="Bet" ToRole="Race" />
+        </EntityType>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LoginName" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Account" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Bet" Relationship="Self.FK_Bet_Client" FromRole="Client" ToRole="Bet" />
+        </EntityType>
+        <EntityType Name="Horse">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Species" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="YearBirth" Type="Int32" Nullable="false" />
+          <Property Name="Rang" Type="Int32" Nullable="false" />
+          <Property Name="RiderID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Rider" Relationship="Self.FK_Horse_Rider" FromRole="Horse" ToRole="Rider" />
+          <NavigationProperty Name="Rider1" Relationship="Self.FK_Rider_Horse" FromRole="Horse" ToRole="Rider" />
+        </EntityType>
+        <EntityType Name="Race">
+          <Key>
+            <PropertyRef Name="RaceId" />
+          </Key>
+          <Property Name="RaceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="isOver" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Bet" Relationship="Self.FK_Bet_Race" FromRole="Race" ToRole="Bet" />
+          <NavigationProperty Name="RaceMembers" Relationship="Self.FK_RaceMembers_Race" FromRole="Race" ToRole="RaceMembers" />
+        </EntityType>
+        <EntityType Name="RaceMembers">
+          <Key>
+            <PropertyRef Name="RaceId" />
+            <PropertyRef Name="RiderID" />
+          </Key>
+          <Property Name="RaceId" Type="Int32" Nullable="false" />
+          <Property Name="RiderID" Type="Int32" Nullable="false" />
+          <Property Name="Place" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Race" Relationship="Self.FK_RaceMembers_Race" FromRole="RaceMembers" ToRole="Race" />
+          <NavigationProperty Name="Rider" Relationship="Self.FK_RaceMembers_Rider" FromRole="RaceMembers" ToRole="Rider" />
+        </EntityType>
+        <EntityType Name="Rider">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Country" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="HorseId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Horse" Relationship="Self.FK_Horse_Rider" FromRole="Rider" ToRole="Horse" />
+          <NavigationProperty Name="Horse1" Relationship="Self.FK_Rider_Horse" FromRole="Rider" ToRole="Horse" />
+          <NavigationProperty Name="RaceMembers" Relationship="Self.FK_RaceMembers_Rider" FromRole="Rider" ToRole="RaceMembers" />
+        </EntityType>
+        <Association Name="FK_Bet_Client">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="Bet" Type="Self.Bet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Bet">
+              <PropertyRef Name="ClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bet_Race">
+          <End Role="Race" Type="Self.Race" Multiplicity="1" />
+          <End Role="Bet" Type="Self.Bet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Race">
+              <PropertyRef Name="RaceId" />
+            </Principal>
+            <Dependent Role="Bet">
+              <PropertyRef Name="RaceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Horse_Rider">
+          <End Role="Rider" Type="Self.Rider" Multiplicity="1" />
+          <End Role="Horse" Type="Self.Horse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rider">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Horse">
+              <PropertyRef Name="RiderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Rider_Horse">
+          <End Role="Horse" Type="Self.Horse" Multiplicity="1" />
+          <End Role="Rider" Type="Self.Rider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Horse">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Rider">
+              <PropertyRef Name="HorseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RaceMembers_Race">
+          <End Role="Race" Type="Self.Race" Multiplicity="1" />
+          <End Role="RaceMembers" Type="Self.RaceMembers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Race">
+              <PropertyRef Name="RaceId" />
+            </Principal>
+            <Dependent Role="RaceMembers">
+              <PropertyRef Name="RaceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RaceMembers_Rider">
+          <End Role="Rider" Type="Self.Rider" Multiplicity="1" />
+          <End Role="RaceMembers" Type="Self.RaceMembers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rider">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RaceMembers">
+              <PropertyRef Name="RiderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="RaceEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Admin" EntityType="Self.Admin" />
+          <EntitySet Name="Bet" EntityType="Self.Bet" />
+          <EntitySet Name="Client" EntityType="Self.Client" />
+          <EntitySet Name="Horse" EntityType="Self.Horse" />
+          <EntitySet Name="Race" EntityType="Self.Race" />
+          <EntitySet Name="RaceMembers" EntityType="Self.RaceMembers" />
+          <EntitySet Name="Rider" EntityType="Self.Rider" />
+          <AssociationSet Name="FK_Bet_Client" Association="Self.FK_Bet_Client">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="Bet" EntitySet="Bet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bet_Race" Association="Self.FK_Bet_Race">
+            <End Role="Race" EntitySet="Race" />
+            <End Role="Bet" EntitySet="Bet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Horse_Rider" Association="Self.FK_Horse_Rider">
+            <End Role="Rider" EntitySet="Rider" />
+            <End Role="Horse" EntitySet="Horse" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Rider_Horse" Association="Self.FK_Rider_Horse">
+            <End Role="Horse" EntitySet="Horse" />
+            <End Role="Rider" EntitySet="Rider" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RaceMembers_Race" Association="Self.FK_RaceMembers_Race">
+            <End Role="Race" EntitySet="Race" />
+            <End Role="RaceMembers" EntitySet="RaceMembers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RaceMembers_Rider" Association="Self.FK_RaceMembers_Rider">
+            <End Role="Rider" EntitySet="Rider" />
+            <End Role="RaceMembers" EntitySet="RaceMembers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище CourseWorkModelContainer" CdmEntityContainer="RaceEntities">
+          <EntitySetMapping Name="Admin">
+            <EntityTypeMapping TypeName="CourseWorkModel.Admin">
+              <MappingFragment StoreEntitySet="Admin">
+                <ScalarProperty Name="AdminId" ColumnName="AdminId" />
+                <ScalarProperty Name="LoginName" ColumnName="LoginName" />
+                <ScalarProperty Name="Passvord" ColumnName="Passvord" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Bet">
+            <EntityTypeMapping TypeName="CourseWorkModel.Bet">
+              <MappingFragment StoreEntitySet="Bet">
+                <ScalarProperty Name="RaceId" ColumnName="RaceId" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="HorseID" ColumnName="HorseID" />
+                <ScalarProperty Name="BetSum" ColumnName="BetSum" />
+                <ScalarProperty Name="isOpen" ColumnName="isOpen" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Client">
+            <EntityTypeMapping TypeName="CourseWorkModel.Client">
+              <MappingFragment StoreEntitySet="Client">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="LoginName" ColumnName="LoginName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Account" ColumnName="Account" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Horse">
+            <EntityTypeMapping TypeName="CourseWorkModel.Horse">
+              <MappingFragment StoreEntitySet="Horse">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Species" ColumnName="Species" />
+                <ScalarProperty Name="YearBirth" ColumnName="YearBirth" />
+                <ScalarProperty Name="Rang" ColumnName="Rang" />
+                <ScalarProperty Name="RiderID" ColumnName="RiderID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Race">
+            <EntityTypeMapping TypeName="CourseWorkModel.Race">
+              <MappingFragment StoreEntitySet="Race">
+                <ScalarProperty Name="RaceId" ColumnName="RaceId" />
+                <ScalarProperty Name="isOver" ColumnName="isOver" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RaceMembers">
+            <EntityTypeMapping TypeName="CourseWorkModel.RaceMembers">
+              <MappingFragment StoreEntitySet="RaceMembers">
+                <ScalarProperty Name="RaceId" ColumnName="RaceId" />
+                <ScalarProperty Name="RiderID" ColumnName="RiderID" />
+                <ScalarProperty Name="Place" ColumnName="Place" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rider">
+            <EntityTypeMapping TypeName="CourseWorkModel.Rider">
+              <MappingFragment StoreEntitySet="Rider">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="HorseId" ColumnName="HorseId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
